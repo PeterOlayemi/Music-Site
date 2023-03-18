@@ -1,0 +1,51 @@
+{%extends 'base.html' %}
+
+{%block content%}
+<h2>{{obj.title}}</h2>
+<b>singer(s):</b> <a href="{% url 'usersearch' obj.singer %}">{{obj.singer}}</a> &nbsp; &nbsp; &nbsp; &nbsp; <b>Duration:</b> {{obj.duration}} &nbsp; &nbsp; &nbsp; &nbsp; <b>released date:</b> {{obj.release_date}} &nbsp; &nbsp; &nbsp; &nbsp; <b>reviews:</b> {{review_c}} &nbsp; &nbsp; &nbsp; &nbsp; <b>Likes:</b> {{obj.likes}}<br> 
+<br><form method="post" action="{% url 'detail' obj.pk %}">{%csrf_token%}<input type="submit" value="Like Music"></form>
+<br><hr>
+<img src="{{obj.cover_picture.url}}" style="height:400px; width:400px;"><br>
+<p>{{obj.description}}</p>
+<div align="center">
+<h2>Play Now</h2>
+<audio controls>
+    <source src="{{obj.audio.url}}" type="audio/mp3">
+</audio><br><br><br><br>
+<a href="{{obj.audio.url}}" download><span style="font-size: 25px;"><b>DOWNLOAD NOW</b></span></a>
+</div>
+{% if obj.video %}<br><br><br><br>
+<h2>Watch official video below</h2><br><br>
+<video width="500" height="300" controls>
+    <source src="{{obj.video.url}}" type="video/mp4">
+</video>
+{%endif%}
+{% if obj.lyrics %}<br><br><br><br>
+<h3>Lyrics</h3>
+<p>{{obj.lyrics}}</p>
+{%endif%}
+<br><hr><br>
+<h2>Add Review</h2>
+<form method="post">
+    {%if user.is_authenticated%}{%else%}<p>Make sure you are <a href="{% url 'login' %}">Logged In</a> before adding your review</p>{%endif%}
+    {%csrf_token%}
+    {{form.as_p}}
+    <input type="submit" value="add">
+</form>
+<br><br><hr><br>
+<h2>Review{{review_c|pluralize}} ({{review_c}})</h2>
+{% for post in post %}
+    {% if post.is_parent %}
+        <p>- &nbsp; {{post.content}}</p>
+        <i>&nbsp; &nbsp; By {{post.writer}} on {{post.date}} {%if post.writer == request.user %}<a href="{% url 'del' post.pk %}">Delete</a>{%else%}<a href="{% url 'reply' post.pk %}">Reply</a>{%endif%}</i><br>{%if post.children%}{%else%}<hr>{%endif%}
+    {%endif%}
+    {% for reply in post.children %}
+        <div style="padding-left: 3%;">
+            <p>- &nbsp; {{reply.content}}</p>
+            <i>&nbsp; &nbsp; By {{reply.writer}} on {{reply.date}} {%if reply.writer == request.user %}<a href="{% url 'del' reply.pk %}">Delete</a>{%else%}<a href="{% url 'reply' post.pk %}">Reply</a>{%endif%}</i><br><hr>
+        </div>
+    {%endfor%}
+{%empty%}
+    <p>No review</p>
+{%endfor%}
+{%endblock%}

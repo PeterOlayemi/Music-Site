@@ -1,0 +1,24 @@
+<h1>Hemolysin</h1>
+<a href="{% url 'home' %}">Home</a>
+<br><br><br>
+<form method="post" action="{% url 'search' %}">
+    {%csrf_token%}
+    <input type="text" name="q" placeholder="Enter Title\Category\Singer">
+    <input type="submit" value="Search">
+</form>
+<br>
+{%if data%}
+{% for data in data %}
+<a href="{% url 'category' data.area %}">{{data.area}}</a> &nbsp; &nbsp; &nbsp; &nbsp;
+{%endfor%}
+<br><br><hr><br>
+{%endif%}
+<a href="{% url 'hot' %}">See Trending Songs</a> &nbsp; &nbsp; <a href="{% url 'report' %}">Report A Problem</a>
+{% if messages %}
+<br><br><br>
+{%for messages in messages%}
+<div style="font-size: larger;">{{messages}}</div>
+{%endfor%}
+{%endif%}
+<br><hr><br>
+{%block content%} {%endblock%}

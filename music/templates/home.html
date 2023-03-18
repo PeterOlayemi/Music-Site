@@ -1,0 +1,9 @@
+{%extends 'base.html' %}
+
+{%block content%}
+<h2>Latest Uploads</h2><br><hr>
+{%for obj in obj%}
+<p><a href="{% url 'detail' obj.pk %}">{{obj.title}}</a> by <a href="{% url 'usersearch' obj.singer %}">{{obj.singer}}</a><br>
+<i>released on {{obj.release_date}}</i></p><hr>
+{%endfor%}
+{%endblock%}

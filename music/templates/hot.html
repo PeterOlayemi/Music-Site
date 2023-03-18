@@ -1,0 +1,11 @@
+{%extends 'base.html' %}
+
+{%block content%}
+<h2>Trending Songs</h2><br><hr>
+{%for obj in obj%}
+<p>{{forloop.counter}} &nbsp; &nbsp; &nbsp;<a href="{% url 'detail' obj.pk %}">{{obj.title}}</a> by <a href="{% url 'usersearch' obj.singer %}">{{obj.singer}}</a>
+<h3> &nbsp; &nbsp; &nbsp; + {{obj.likes}}</h3></p><hr>
+{%empty%}
+<p>No trending songs</p>
+{%endfor%}
+{%endblock%}

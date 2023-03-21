@@ -12,7 +12,7 @@ A music site with django for back end
 ## Installation
 ### 1. Clone Repository & Install Packages
 
-- git clone https://github.com/PeterOlayemi/Movie-Site.git
+- git clone https://github.com/PeterOlayemi/Music-Site.git
 - pip install -r requirements.txt
 
 ### 2. Migrate & Start Server
